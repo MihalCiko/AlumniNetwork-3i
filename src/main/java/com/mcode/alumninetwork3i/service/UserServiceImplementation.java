@@ -16,29 +16,49 @@ import java.util.stream.Collectors;
 public class UserServiceImplementation implements UserService{
 
     private final UserRepository userRepository;
+
     @Override
     public UserGetDto save(UserDto userDto) {
-        return null;
+        var userEntity = new UserEntity(
+                userDto.getFirstName(),
+                userDto.getLastName(),
+                userDto.getAge(),
+                userDto.getEmail(),
+                userDto.getPhoneNumber(),
+                userDto.getGender()
+        );
+        var saved = userRepository.save(userEntity);
+        return map(saved);
     }
 
     @Override
     public void delete(UUID id) {
-
+        userRepository.deleteById(id);
     }
 
     @Override
     public List<UserGetDto> getAll() {
-        return null;
+        return userRepository.findAll()
+                .stream()
+                .map(user -> map(user))
+                .collect(Collectors.toList());
     }
 
     @Override
     public UserGetDto getById(UUID id) {
+        var optional = userRepository.findById(id);
+        if (optional.isPresent()) {
+            return map(optional.get());
+        }
         return null;
     }
 
     @Override
     public UserGetDto update(UUID id, UserDto userDto) {
-        return null;
+        var user = userRepository.findById(id).orElseThrow(RuntimeException::new);
+        user.setFirstName(userDto.getFirstName());
+        var saved = userRepository.save(user);
+        return map(saved);
     }
 
     private UserGetDto map(UserEntity saved) {
@@ -46,7 +66,9 @@ public class UserServiceImplementation implements UserService{
         getDto.setId(saved.getId());
         getDto.setFirstName(saved.getFirstName());
         getDto.setLastName(saved.getLastName());
+        getDto.setAge(saved.getAge());
         getDto.setEmail(saved.getEmail());
+        getDto.setPhoneNumber(saved.getPhoneNumber());
         getDto.setGender(saved.getGender());
         return getDto;
     }
