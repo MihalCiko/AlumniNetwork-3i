@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
 @Table(name = "alumni")
 @NoArgsConstructor
-public class UserEntity extends BaseEntity{
+public class UserEntity extends BaseEntity {
 
     @Column(name = "first_name")
     private String firstName;
@@ -30,17 +32,24 @@ public class UserEntity extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private UserGender gender;
 
+    private String education;
+
+    @OneToMany(mappedBy = "user")
+    private List<EmploymentHistoryEntity> employmentHistoryEntities;
+
     public UserEntity(String firstName,
                       String lastName,
                       Integer age,
                       String email,
                       Integer phoneNumber,
-                      UserGender gender) {
+                      UserGender gender,
+                      String education) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
+        this.education = education;
     }
 }

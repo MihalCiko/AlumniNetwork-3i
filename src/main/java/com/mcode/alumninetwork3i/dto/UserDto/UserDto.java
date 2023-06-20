@@ -1,4 +1,4 @@
-package com.mcode.alumninetwork3i.dto;
+package com.mcode.alumninetwork3i.dto.UserDto;
 
 import com.mcode.alumninetwork3i.enums.UserGender;
 import lombok.Data;
@@ -18,4 +18,6 @@ public class UserDto {
     private Integer phoneNumber;
 
     private UserGender gender;
+
+    private String education;
 }

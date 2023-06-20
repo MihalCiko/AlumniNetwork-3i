@@ -1,7 +1,7 @@
 package com.mcode.alumninetwork3i.service;
 
-import com.mcode.alumninetwork3i.dto.UserDto;
-import com.mcode.alumninetwork3i.dto.UserGetDto;
+import com.mcode.alumninetwork3i.dto.UserDto.UserDto;
+import com.mcode.alumninetwork3i.dto.UserDto.UserGetDto;
 import com.mcode.alumninetwork3i.entity.UserEntity;
 import com.mcode.alumninetwork3i.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,8 @@ public class UserServiceImplementation implements UserService{
                 userDto.getAge(),
                 userDto.getEmail(),
                 userDto.getPhoneNumber(),
-                userDto.getGender()
+                userDto.getGender(),
+                userDto.getEducation()
         );
         var saved = userRepository.save(userEntity);
         return map(saved);
@@ -47,10 +48,7 @@ public class UserServiceImplementation implements UserService{
     @Override
     public UserGetDto getById(UUID id) {
         var optional = userRepository.findById(id);
-        if (optional.isPresent()) {
-            return map(optional.get());
-        }
-        return null;
+        return optional.map(this::map).orElse(null);
     }
 
     @Override
@@ -70,6 +68,7 @@ public class UserServiceImplementation implements UserService{
         getDto.setEmail(saved.getEmail());
         getDto.setPhoneNumber(saved.getPhoneNumber());
         getDto.setGender(saved.getGender());
+        getDto.setEducation(saved.getEducation());
         return getDto;
     }
 

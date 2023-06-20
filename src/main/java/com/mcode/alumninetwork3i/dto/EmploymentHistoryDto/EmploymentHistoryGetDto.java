@@ -1,4 +1,4 @@
-package com.mcode.alumninetwork3i.dto;
+package com.mcode.alumninetwork3i.dto.EmploymentHistoryDto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,6 +7,6 @@ import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserGetDto extends UserDto{
+public class EmploymentHistoryGetDto extends EmploymentHistoryDto{
     private UUID id;
 }
