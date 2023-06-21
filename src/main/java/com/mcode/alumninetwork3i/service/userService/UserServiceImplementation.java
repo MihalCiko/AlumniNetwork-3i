@@ -1,4 +1,4 @@
-package com.mcode.alumninetwork3i.service;
+package com.mcode.alumninetwork3i.service.userService;
 
 import com.mcode.alumninetwork3i.dto.UserDto.UserDto;
 import com.mcode.alumninetwork3i.dto.UserDto.UserGetDto;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImplementation implements UserService{
+public class UserServiceImplementation implements UserService {
 
     private final UserRepository userRepository;
 

@@ -2,7 +2,7 @@ package com.mcode.alumninetwork3i.controller;
 
 import com.mcode.alumninetwork3i.dto.UserDto.UserDto;
 import com.mcode.alumninetwork3i.dto.UserDto.UserGetDto;
-import com.mcode.alumninetwork3i.service.UserService;
+import com.mcode.alumninetwork3i.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

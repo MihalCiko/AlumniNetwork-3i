@@ -1,4 +1,4 @@
-package com.mcode.alumninetwork3i.service;
+package com.mcode.alumninetwork3i.service.userService;
 
 import com.mcode.alumninetwork3i.dto.UserDto.UserDto;
 import com.mcode.alumninetwork3i.dto.UserDto.UserGetDto;
