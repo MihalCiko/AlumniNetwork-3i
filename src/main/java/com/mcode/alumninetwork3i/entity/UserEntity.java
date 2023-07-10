@@ -37,6 +37,13 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<EmploymentHistoryEntity> employmentHistoryEntities;
 
+
+    @Convert(converter = ListConverter.class)
+    private List<String> skills;
+
+    @Convert(converter = ListConverter.class)
+    private List<String> interest;
+
     public UserEntity(String firstName,
                       String lastName,
                       Integer age,
