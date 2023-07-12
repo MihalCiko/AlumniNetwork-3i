@@ -1,4 +1,4 @@
-package com.mcode.alumninetwork3i.dto.EmploymentHistoryDto;
+package com.mcode.alumninetwork3i.dto.employmentHistoryDto;
 
 import lombok.Data;
 

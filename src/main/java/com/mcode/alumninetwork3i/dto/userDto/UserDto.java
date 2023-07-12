@@ -1,4 +1,4 @@
-package com.mcode.alumninetwork3i.dto.UserDto;
+package com.mcode.alumninetwork3i.dto.userDto;
 
 import com.mcode.alumninetwork3i.enums.UserGender;
 import lombok.Data;

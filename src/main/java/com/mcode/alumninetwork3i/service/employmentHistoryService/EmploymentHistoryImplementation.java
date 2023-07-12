@@ -1,7 +1,7 @@
 package com.mcode.alumninetwork3i.service.employmentHistoryService;
 
-import com.mcode.alumninetwork3i.dto.EmploymentHistoryDto.EmploymentHistoryDto;
-import com.mcode.alumninetwork3i.dto.EmploymentHistoryDto.EmploymentHistoryGetDto;
+import com.mcode.alumninetwork3i.dto.employmentHistoryDto.EmploymentHistoryDto;
+import com.mcode.alumninetwork3i.dto.employmentHistoryDto.EmploymentHistoryGetDto;
 import com.mcode.alumninetwork3i.entity.EmploymentHistoryEntity;
 import com.mcode.alumninetwork3i.repository.EmploymentHistoryRepository;
 import lombok.RequiredArgsConstructor;

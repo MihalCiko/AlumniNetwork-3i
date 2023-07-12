@@ -1,7 +1,7 @@
 package com.mcode.alumninetwork3i.service.userService;
 
-import com.mcode.alumninetwork3i.dto.UserDto.UserDto;
-import com.mcode.alumninetwork3i.dto.UserDto.UserGetDto;
+import com.mcode.alumninetwork3i.dto.userDto.UserDto;
+import com.mcode.alumninetwork3i.dto.userDto.UserGetDto;
 import com.mcode.alumninetwork3i.entity.UserEntity;
 import com.mcode.alumninetwork3i.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

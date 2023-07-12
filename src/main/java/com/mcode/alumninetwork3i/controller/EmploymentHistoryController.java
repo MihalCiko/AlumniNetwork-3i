@@ -1,9 +1,9 @@
 package com.mcode.alumninetwork3i.controller;
 
-import com.mcode.alumninetwork3i.dto.EmploymentHistoryDto.EmploymentHistoryDto;
-import com.mcode.alumninetwork3i.dto.EmploymentHistoryDto.EmploymentHistoryGetDto;
-import com.mcode.alumninetwork3i.dto.UserDto.UserDto;
-import com.mcode.alumninetwork3i.dto.UserDto.UserGetDto;
+import com.mcode.alumninetwork3i.dto.employmentHistoryDto.EmploymentHistoryDto;
+import com.mcode.alumninetwork3i.dto.employmentHistoryDto.EmploymentHistoryGetDto;
+import com.mcode.alumninetwork3i.dto.userDto.UserDto;
+import com.mcode.alumninetwork3i.dto.userDto.UserGetDto;
 import com.mcode.alumninetwork3i.service.employmentHistoryService.EmploymentHistoryService;
 import com.mcode.alumninetwork3i.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
