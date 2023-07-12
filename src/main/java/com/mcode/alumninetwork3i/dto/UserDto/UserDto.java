@@ -3,6 +3,9 @@ package com.mcode.alumninetwork3i.dto.UserDto;
 import com.mcode.alumninetwork3i.enums.UserGender;
 import lombok.Data;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
 public class UserDto {
 
@@ -10,8 +13,7 @@ public class UserDto {
 
     private String lastName;
 
-    // TODO  Change to Birthday
-    private Integer age;
+    private Date dateOfBirth;
 
     private String email;
 
@@ -19,5 +21,7 @@ public class UserDto {
 
     private UserGender gender;
 
-    private String education;
+    private List<String> skills;
+
+    private List<String> interest;
 }

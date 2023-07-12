@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,8 +23,8 @@ public class UserEntity extends BaseEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    // TODO  Change to Birthday
-    private Integer age;
+    @Column(name = "date_of_birth")
+    private Date dateOfBirth;
 
     private String email;
 
@@ -32,11 +34,24 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserGender gender;
 
-    private String education;
+    private String location;
+
+    private String bio;
+
+    // TODO Photo
 
     @OneToMany(mappedBy = "user")
     private List<EmploymentHistoryEntity> employmentHistoryEntities;
 
+    @OneToMany(mappedBy = "userEducation")
+    private List<EducationEntity> educationEntities;
+
+    @ManyToMany
+    @JoinTable(
+            name = "applicants",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id"))
+    Set<EventEntity> appliedEvents;
 
     @Convert(converter = ListConverter.class)
     private List<String> skills;
@@ -46,17 +61,19 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity(String firstName,
                       String lastName,
-                      Integer age,
+                      Date dateOfBirth,
                       String email,
                       Integer phoneNumber,
                       UserGender gender,
-                      String education) {
+                      List<String> skills,
+                      List<String> interest) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
+        this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
-        this.education = education;
+        this.skills = skills;
+        this.interest = interest;
     }
 }

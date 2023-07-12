@@ -22,11 +22,12 @@ public class UserServiceImplementation implements UserService {
         var userEntity = new UserEntity(
                 userDto.getFirstName(),
                 userDto.getLastName(),
-                userDto.getAge(),
+                userDto.getDateOfBirth(),
                 userDto.getEmail(),
                 userDto.getPhoneNumber(),
                 userDto.getGender(),
-                userDto.getEducation()
+                userDto.getSkills(),
+                userDto.getInterest()
         );
         var saved = userRepository.save(userEntity);
         return map(saved);
@@ -64,11 +65,10 @@ public class UserServiceImplementation implements UserService {
         getDto.setId(saved.getId());
         getDto.setFirstName(saved.getFirstName());
         getDto.setLastName(saved.getLastName());
-        getDto.setAge(saved.getAge());
+        getDto.setDateOfBirth(saved.getDateOfBirth());
         getDto.setEmail(saved.getEmail());
         getDto.setPhoneNumber(saved.getPhoneNumber());
         getDto.setGender(saved.getGender());
-        getDto.setEducation(saved.getEducation());
         return getDto;
     }
 

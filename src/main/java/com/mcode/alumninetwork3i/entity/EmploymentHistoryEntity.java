@@ -5,21 +5,23 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "employment_history")
+@NoArgsConstructor
 public class EmploymentHistoryEntity extends BaseEntity {
 
     private String company;
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private Date startDate;
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private Date endDate;
     @Column(length = 1500)
     private String description;
 
@@ -27,8 +29,8 @@ public class EmploymentHistoryEntity extends BaseEntity {
     private UserEntity user;
 
     public EmploymentHistoryEntity(String company,
-                                   LocalDateTime startDate,
-                                   LocalDateTime endDate,
+                                   Date startDate,
+                                   Date endDate,
                                    String description) {
         this.company = company;
         this.startDate = startDate;
