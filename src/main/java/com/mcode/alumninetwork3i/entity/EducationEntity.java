@@ -1,5 +1,6 @@
 package com.mcode.alumninetwork3i.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -25,9 +26,11 @@ public class EducationEntity extends BaseEntity {
     @Column(name = "type_of_study")
     private String typeOfStudy;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "start_date")
     private Date startDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "end_date")
     private Date endDate;
 
