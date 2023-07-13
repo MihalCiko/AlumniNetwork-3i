@@ -21,6 +21,10 @@ public class UserDto {
 
     private UserGender gender;
 
+    private String location;
+
+    private String bio;
+
     private List<String> skills;
 
     private List<String> interest;

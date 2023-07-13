@@ -27,7 +27,9 @@ public class UserServiceImplementation implements UserService {
                 userDto.getPhoneNumber(),
                 userDto.getGender(),
                 userDto.getSkills(),
-                userDto.getInterest()
+                userDto.getInterest(),
+                userDto.getLocation(),
+                userDto.getBio()
         );
         var saved = userRepository.save(userEntity);
         return map(saved);
@@ -69,6 +71,10 @@ public class UserServiceImplementation implements UserService {
         getDto.setEmail(saved.getEmail());
         getDto.setPhoneNumber(saved.getPhoneNumber());
         getDto.setGender(saved.getGender());
+        getDto.setInterest(saved.getInterest());
+        getDto.setSkills(saved.getSkills());
+        getDto.setLocation(saved.getLocation());
+        getDto.setBio(saved.getBio());
         return getDto;
     }
 

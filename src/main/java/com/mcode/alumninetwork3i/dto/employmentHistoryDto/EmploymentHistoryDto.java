@@ -8,7 +8,10 @@ import java.util.Date;
 public class EmploymentHistoryDto {
 
     private String company;
+
     private Date startDate;
+
     private Date endDate;
+
     private String description;
 }
