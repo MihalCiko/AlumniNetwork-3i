@@ -1,5 +1,6 @@
 package com.mcode.alumninetwork3i.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -18,10 +19,16 @@ import java.util.Date;
 public class EmploymentHistoryEntity extends BaseEntity {
 
     private String company;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "start_date")
     private Date startDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "end_date")
+
     private Date endDate;
+
     @Column(length = 1500)
     private String description;
 

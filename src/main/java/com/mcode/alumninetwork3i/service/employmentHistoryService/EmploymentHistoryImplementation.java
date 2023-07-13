@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class EmploymentHistoryImplementation implements EmploymentHistoryService{
+public class EmploymentHistoryImplementation implements EmploymentHistoryService {
 
     private final EmploymentHistoryRepository employmentHistoryRepository;
 

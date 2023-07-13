@@ -15,7 +15,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Table(name = "educations")
-public class EducationEntity extends BaseEntity{
+public class EducationEntity extends BaseEntity {
 
     @Column(name = "school_name")
     private String schoolName;
@@ -33,6 +33,7 @@ public class EducationEntity extends BaseEntity{
 
     @ManyToOne
     private UserEntity userEducation;
+
     public EducationEntity(String schoolName,
                            String degree,
                            String typeOfStudy,

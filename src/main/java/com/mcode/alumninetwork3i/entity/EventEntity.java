@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Table(name = "events")
-public class EventEntity extends BaseEntity{
+public class EventEntity extends BaseEntity {
 
     private String tittle;
 

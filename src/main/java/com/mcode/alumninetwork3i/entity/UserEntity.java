@@ -1,5 +1,6 @@
 package com.mcode.alumninetwork3i.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mcode.alumninetwork3i.enums.UserGender;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Setter
 @Table(name = "alumni")
 @NoArgsConstructor
+@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 public class UserEntity extends BaseEntity {
 
     @Column(name = "first_name")
@@ -23,6 +25,7 @@ public class UserEntity extends BaseEntity {
     @Column(name = "last_name")
     private String lastName;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
@@ -66,7 +69,9 @@ public class UserEntity extends BaseEntity {
                       Integer phoneNumber,
                       UserGender gender,
                       List<String> skills,
-                      List<String> interest) {
+                      List<String> interest,
+                      String location,
+                      String bio) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -75,5 +80,7 @@ public class UserEntity extends BaseEntity {
         this.gender = gender;
         this.skills = skills;
         this.interest = interest;
+        this.location = location;
+        this.bio = bio;
     }
 }
