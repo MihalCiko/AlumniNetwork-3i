@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Table(name = "events")
-public class EventEntity extends BaseEntity{
+public class EventEntity extends BaseEntity {
 
     private String tittle;
 
@@ -29,4 +29,16 @@ public class EventEntity extends BaseEntity{
 
     @ManyToMany(mappedBy = "appliedEvents")
     Set<UserEntity> apply;
+
+    public EventEntity(String tittle,
+                       LocalDate datePosted,
+                       LocalDateTime timePosted,
+                       String location,
+                       String description) {
+        this.tittle = tittle;
+        this.datePosted = datePosted;
+        this.timePosted = timePosted;
+        this.location = location;
+        this.description = description;
+    }
 }
