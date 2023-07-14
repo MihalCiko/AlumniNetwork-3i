@@ -16,8 +16,9 @@ import java.util.UUID;
 @RequestMapping("/api/v1/event")
 @RequiredArgsConstructor
 public class EventController {
+
     private final EventService eventService;
-    private final UserService userService;
+
 
     @PostMapping
     public EventGetDto save(@RequestBody EventDto eventDto){
@@ -28,18 +29,18 @@ public class EventController {
     public List<EventGetDto> getAll(){
         return eventService.getAll();
     }
-    @GetMapping("{userid}")
-    public EventGetDto getById(@PathVariable UUID userid){
-        return eventService.getById(userid);
+    @GetMapping("{eventid}")
+    public EventGetDto getById(@PathVariable UUID eventid){
+        return eventService.getById(eventid);
     }
-    @PatchMapping("{userid}")
-    public UserGetDto update(@PathVariable UUID userid, @RequestBody UserDto userDto){
-        return userService.update(userid,userDto);
+    @PatchMapping("{eventid}")
+    public EventGetDto update(@PathVariable UUID eventid, @RequestBody EventDto eventDto){
+        return eventService.update(eventid,eventDto);
     }
 
-    @DeleteMapping("{userid}")
-    public void delete (@PathVariable UUID userid){
-        userService.delete(userid);
+    @DeleteMapping("{eventid}")
+    public void delete (@PathVariable UUID eventid){
+        eventService.delete(eventid);
     }
 
 
