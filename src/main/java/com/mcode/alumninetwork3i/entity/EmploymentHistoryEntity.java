@@ -26,7 +26,6 @@ public class EmploymentHistoryEntity extends BaseEntity {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "end_date")
-
     private Date endDate;
 
     @Column(length = 1500)

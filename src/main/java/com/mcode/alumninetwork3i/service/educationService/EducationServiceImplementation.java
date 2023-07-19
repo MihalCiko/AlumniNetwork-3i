@@ -4,6 +4,8 @@ import com.mcode.alumninetwork3i.dto.educationDto.EducationDto;
 import com.mcode.alumninetwork3i.dto.educationDto.EducationGetDto;
 import com.mcode.alumninetwork3i.entity.EducationEntity;
 import com.mcode.alumninetwork3i.repository.EducationRepository;
+import com.mcode.alumninetwork3i.service.userService.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +15,15 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EducationServiceImplementation implements EducationService {
 
     private final EducationRepository educationRepository;
+    private final UserService userService;
 
     @Override
-    public EducationGetDto save(EducationDto educationDto) {
+    public EducationGetDto save(UUID userId, EducationDto educationDto) {
+        var user = userService.findEntity(userId);
         var educationEntity = new EducationEntity(
                 educationDto.getSchoolName(),
                 educationDto.getDegree(),
@@ -26,8 +31,14 @@ public class EducationServiceImplementation implements EducationService {
                 educationDto.getStartDate(),
                 educationDto.getEndDate()
         );
+        educationEntity.setUser(user);
         var saved = educationRepository.save(educationEntity);
         return map(saved);
+    }
+
+    @Override
+    public EducationGetDto save(EducationDto educationDto) {
+        return null;
     }
 
     @Override

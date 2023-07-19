@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -31,6 +32,8 @@ public class UserEntity extends BaseEntity {
 
     private String email;
 
+    private String password;
+
     @Column(name = "phone_number")
     private Integer phoneNumber;
 
@@ -46,7 +49,7 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<EmploymentHistoryEntity> employmentHistoryEntities;
 
-    @OneToMany(mappedBy = "userEducation")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<EducationEntity> educationEntities;
 
     @ManyToMany
@@ -55,6 +58,15 @@ public class UserEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id"))
     Set<EventEntity> appliedEvents;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<RoleEntity> roles;
 
     @Convert(converter = ListConverter.class)
     private List<String> skills;
@@ -66,6 +78,7 @@ public class UserEntity extends BaseEntity {
                       String lastName,
                       Date dateOfBirth,
                       String email,
+                      String password,
                       Integer phoneNumber,
                       UserGender gender,
                       List<String> skills,
@@ -76,6 +89,7 @@ public class UserEntity extends BaseEntity {
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
+        this.password = password;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
         this.skills = skills;

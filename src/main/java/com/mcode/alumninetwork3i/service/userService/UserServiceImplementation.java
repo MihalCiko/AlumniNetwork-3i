@@ -24,6 +24,7 @@ public class UserServiceImplementation implements UserService {
                 userDto.getLastName(),
                 userDto.getDateOfBirth(),
                 userDto.getEmail(),
+                userDto.getPassword(),
                 userDto.getPhoneNumber(),
                 userDto.getGender(),
                 userDto.getSkills(),
@@ -83,6 +84,11 @@ public class UserServiceImplementation implements UserService {
                 .stream()
                 .map(this::map)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserEntity findEntity(UUID userId) {
+        return null;
     }
 }
 

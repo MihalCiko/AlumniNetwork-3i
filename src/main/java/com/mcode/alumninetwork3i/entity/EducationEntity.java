@@ -35,7 +35,7 @@ public class EducationEntity extends BaseEntity {
     private Date endDate;
 
     @ManyToOne
-    private UserEntity userEducation;
+    private UserEntity user;
 
     public EducationEntity(String schoolName,
                            String degree,

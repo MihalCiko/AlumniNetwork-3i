@@ -8,6 +8,8 @@ import java.util.UUID;
 
 public interface EducationService {
 
+    EducationGetDto save(UUID userId, EducationDto educationDto);
+
     EducationGetDto save(EducationDto educationDto);
 
     void delete(UUID id);
