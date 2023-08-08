@@ -20,4 +20,8 @@ public interface UserService {
 
     List<UserGetDto> findAllByFirstName(String firstName);
     UserEntity findEntity(UUID userId);
+
+    List<UserEntity> fetchAllUsersFilterBy(String searchQuery);
+
+    List<UserEntity> fetchAllUsers();
 }

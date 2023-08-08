@@ -90,6 +90,15 @@ public class UserServiceImplementation implements UserService {
     public UserEntity findEntity(UUID userId) {
         return null;
     }
+
+    public List<UserEntity> fetchAllUsersFilterBy(String search) {
+        search = "%" + search + "%";
+        return userRepository.findAllByFirstName(search);
+    }
+
+    public List<UserEntity> fetchAllUsers() {
+        return userRepository.findAll();
+    }
 }
 
 
