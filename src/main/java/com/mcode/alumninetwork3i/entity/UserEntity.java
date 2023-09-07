@@ -1,15 +1,13 @@
 package com.mcode.alumninetwork3i.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mcode.alumninetwork3i.enums.UserGender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -19,74 +17,100 @@ import java.util.Set;
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 public class UserEntity extends BaseEntity {
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
-
+    @Column(length = 64, nullable = false)
     private String email;
 
+    @Column(length = 256, nullable = false)
+    @JsonIgnore
     private String password;
 
-    @Column(name = "phone_number")
-    private Integer phoneNumber;
+    @Column(length = 64, nullable = false)
+    private String firstName;
 
-    @Enumerated(EnumType.STRING)
-    private UserGender gender;
+    @Column(length = 64, nullable = false)
+    private String lastName;
 
-    private String location;
+    @Column(length = 100)
+    private String intro;
 
-    private String bio;
+    @Column(length = 16)
+    private String gender;
 
-    // TODO Photo
+    @Column(length = 128)
+    private String hometown;
 
-    @OneToMany(mappedBy = "user")
-    private List<EmploymentHistoryEntity> employmentHistoryEntities;
+    @Column(length = 128)
+    private String currentCity;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<EducationEntity> educationEntities;
+    @Column(length = 128)
+    private String eduInstitution;
 
+    @Column(length = 128)
+    private String workplace;
+
+    @Column(length = 256)
+    private String profilePhoto;
+
+    @Column(length = 256)
+    private String coverPhoto;
+
+    @Column(length = 32, nullable = false)
+    private String role;
+
+    private Integer followerCount;
+    private Integer followingCount;
+    private Boolean enabled;
+    private Boolean accountVerified;
+    private Boolean emailVerified;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date birthDate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date joinDate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date dateLastModified;
+
+    @OneToOne
+    @JoinColumn(name = "country_id")
+    private CountryEntity country;
+
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "applicants",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "event_id"))
-    Set<EventEntity> appliedEvents;
+            name = "follow_users",
+            joinColumns = @JoinColumn(name = "followed_id"),
+            inverseJoinColumns = @JoinColumn(name = "follower_id")
+    )
+    private List<UserEntity> followerUsers = new ArrayList<>();
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "followerUsers")
+    private List<UserEntity> followingUsers = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    private List<PostEntity> postList;
 
-    @Convert(converter = ListConverter.class)
-    private List<String> skills;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "likeList")
+    private List<PostEntity> likedPosts = new ArrayList<>();
 
-    @Convert(converter = ListConverter.class)
-    private List<String> interest;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "likeList")
+    private List<CommentEntity> likedComments = new ArrayList<>();
 
-    public UserEntity(String firstName,
-                      String lastName,
-                      Date dateOfBirth,
-                      String email,
-                      String password,
-                      Integer phoneNumber,
-                      UserGender gender,
-                      List<String> skills,
-                      List<String> interest,
-                      String location,
-                      String bio) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.skills = skills;
-        this.interest = interest;
-        this.location = location;
-        this.bio = bio;
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        UserEntity user = (UserEntity) object;
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email);
     }
 }

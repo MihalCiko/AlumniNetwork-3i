@@ -1,27 +1,53 @@
 package com.mcode.alumninetwork3i.service.userService;
 
-import com.mcode.alumninetwork3i.dto.userDto.UserDto;
-import com.mcode.alumninetwork3i.dto.userDto.UserGetDto;
+import com.mcode.alumninetwork3i.dto.*;
+import com.mcode.alumninetwork3i.entity.CommentEntity;
+import com.mcode.alumninetwork3i.entity.PostEntity;
 import com.mcode.alumninetwork3i.entity.UserEntity;
+import com.mcode.alumninetwork3i.response.UserResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-    UserGetDto save(UserDto userDto);
+    UserEntity getUserById(Long userId);
 
-    void delete(UUID id);
+    UserEntity getUserByEmail(String email);
 
-    List<UserGetDto> getAll();
+    List<UserResponse> getFollowerUsersPaginate(Long userId, Integer page, Integer size);
 
-    UserGetDto getById(UUID id);
+    List<UserResponse> getFollowingUsersPaginate(Long userId, Integer page, Integer size);
 
-    UserGetDto update(UUID id, UserDto userDto);
+    UserEntity createNewUser(SignupDto signupDto);
 
-    List<UserGetDto> findAllByFirstName(String firstName);
-    UserEntity findEntity(UUID userId);
+    UserEntity updateUserInfo(UpdateUserInfoDto updateUserInfoDto);
 
-    List<UserEntity> fetchAllUsersFilterBy(String searchQuery);
+    UserEntity updateEmail(UpdateEmailDto updateEmailDto);
 
-    List<UserEntity> fetchAllUsers();
+    UserEntity updatePassword(UpdatePasswordDto updatePasswordDto);
+
+    UserEntity updateProfilePhoto(MultipartFile photo);
+
+    UserEntity updateCoverPhoto(MultipartFile photo);
+
+    UserEntity verifyEmail(String token);
+
+    void forgotPassword(String email);
+
+    UserEntity resetPassword(String token, ResetPasswordDto resetPasswordDto);
+
+    void deleteUserAccount();
+
+    void followUser(Long userId);
+
+    void unfollowUser(Long userId);
+
+    UserEntity getAuthenticatedUser();
+
+    List<UserResponse> getUserSearchResult(String key, Integer page, Integer size);
+
+    List<UserEntity> getLikesByPostPaginate(PostEntity post, Integer page, Integer size);
+
+    List<UserEntity> getLikesByCommentPaginate(CommentEntity comment, Integer page, Integer size);
 }
