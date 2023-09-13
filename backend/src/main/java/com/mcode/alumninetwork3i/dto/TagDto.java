@@ -1,8 +1,8 @@
 package com.mcode.alumninetwork3i.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Getter

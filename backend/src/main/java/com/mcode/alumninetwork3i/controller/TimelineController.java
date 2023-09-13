@@ -2,8 +2,8 @@ package com.mcode.alumninetwork3i.controller;
 
 import com.mcode.alumninetwork3i.entity.TagEntity;
 import com.mcode.alumninetwork3i.response.PostResponse;
-import com.mcode.alumninetwork3i.service.postService.PostService;
-import com.mcode.alumninetwork3i.service.tagService.TagService;
+import com.mcode.alumninetwork3i.service.PostService;
+import com.mcode.alumninetwork3i.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

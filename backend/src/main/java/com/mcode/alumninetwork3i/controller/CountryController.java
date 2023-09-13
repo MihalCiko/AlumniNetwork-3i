@@ -1,7 +1,7 @@
 package com.mcode.alumninetwork3i.controller;
 
 import com.mcode.alumninetwork3i.entity.CountryEntity;
-import com.mcode.alumninetwork3i.service.countryService.CountryService;
+import com.mcode.alumninetwork3i.service.CountryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.mcode.alumninetwork3i.controller;
 
 import com.mcode.alumninetwork3i.entity.NotificationEntity;
-import com.mcode.alumninetwork3i.service.notificationService.NotificationService;
+import com.mcode.alumninetwork3i.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

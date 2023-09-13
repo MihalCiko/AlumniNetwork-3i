@@ -1,9 +1,10 @@
 package com.mcode.alumninetwork3i.entity;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 
 @Getter

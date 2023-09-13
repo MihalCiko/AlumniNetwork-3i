@@ -7,9 +7,8 @@ import com.mcode.alumninetwork3i.entity.UserEntity;
 import com.mcode.alumninetwork3i.response.PostResponse;
 import com.mcode.alumninetwork3i.response.UserResponse;
 import com.mcode.alumninetwork3i.service.JwtTokenService;
-import com.mcode.alumninetwork3i.service.postService.PostService;
-import com.mcode.alumninetwork3i.service.userService.UserService;
-import jakarta.validation.Valid;
+import com.mcode.alumninetwork3i.service.PostService;
+import com.mcode.alumninetwork3i.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 

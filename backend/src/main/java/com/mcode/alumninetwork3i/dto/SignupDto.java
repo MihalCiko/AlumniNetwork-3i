@@ -3,8 +3,9 @@ package com.mcode.alumninetwork3i.dto;
 import com.mcode.alumninetwork3i.annotation.PasswordRepeatEqual;
 import com.mcode.alumninetwork3i.annotation.ValidEmail;
 import com.mcode.alumninetwork3i.annotation.ValidPassword;
-import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter

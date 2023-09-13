@@ -1,7 +1,8 @@
 package com.mcode.alumninetwork3i.dto;
 
-import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
