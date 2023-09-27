@@ -19,6 +19,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Tag {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 64, nullable = false, unique = true)
@@ -38,10 +39,10 @@ public class Tag {
     private List<Post> taggedPosts = new ArrayList<>();
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        Tag tag = (Tag) object;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tag tag = (Tag) o;
         return id.equals(tag.id) && name.equals(tag.name);
     }
 

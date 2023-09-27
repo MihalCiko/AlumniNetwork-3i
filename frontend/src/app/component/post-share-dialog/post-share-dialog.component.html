@@ -48,7 +48,7 @@
     </ul>
 
     <div class="mt-4 mb-3 text-center" *ngIf="hasMoreResult">
-      <button mat-raised-button color="primary" class="rounded-pill align-middle"
+      <button mat-raised-button  class="rounded-pill align-middle" style="background-color: #352F44;  color: #fff;  color: #fff;"
         *ngIf="hasMoreResult && !(fetchingResult && resultPage > 1)" (click)="loadPostShares(resultPage)">Load
         More</button>
       <div *ngIf="fetchingResult && resultPage > 1" class="d-inline-block"

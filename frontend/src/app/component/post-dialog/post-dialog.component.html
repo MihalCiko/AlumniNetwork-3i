@@ -45,12 +45,12 @@
 	
 				<span class="fw-500 align-middle cursor-pointer text-danger d-inline-block ms-4" *ngIf="dataPost && dataPost.postPhoto" (click)="openPostPhotoDeleteConfirmDialog()">Delete Photo</span>
 				
-				<button mat-icon-button color="primary" matTooltip="Add New Tag" matTooltipPosition="left" class="float-end" (click)="openAddTagDialog($event)">
+				<button mat-icon-button style="background-color: #352F44;  color: #fff;" matTooltip="Add New Tag" matTooltipPosition="left" class="float-end" (click)="openAddTagDialog($event)">
 					<mat-icon>style</mat-icon>
 				</button>
 			</div>
 			
-			<button mat-raised-button color="primary" type="submit" class="position-absolute" style="top: 4px; right: 0;">
+			<button mat-raised-button style="background-color: #352F44;  color: #fff;" type="submit" class="position-absolute" style="top: 4px; right: 0;">
 				{{ dataPost ? 'Update' : 'Post' }}
 			</button>
 		</form>

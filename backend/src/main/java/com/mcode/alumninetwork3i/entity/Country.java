@@ -3,10 +3,7 @@ package com.mcode.alumninetwork3i.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
@@ -19,6 +16,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Country {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 64, nullable = false, unique = true)
@@ -30,11 +28,7 @@ public class Country {
     @Column(length = 4)
     private String callingCode;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date dateCreated;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date dateLastModified;
+    private String number;
 
     @Override
     public boolean equals(Object object) {

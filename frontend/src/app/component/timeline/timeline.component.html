@@ -31,8 +31,8 @@
 
 				<div class="text-center mb-4">
 					<mat-spinner style="transform: scale(0.3);" class="text-center ms-auto me-auto" *ngIf="fetchingResult"></mat-spinner>
-					<button mat-raised-button color="primary" class="mat-btn-lg rounded-pill" *ngIf="hasMoreResult && !fetchingResult && !isTaggedPostPage" (click)="loadTimelinePosts(resultPage)">Load More</button>
-					<button mat-raised-button color="primary" class="mat-btn-lg rounded-pill" *ngIf="hasMoreResult && !fetchingResult && isTaggedPostPage" (click)="loadTaggedPosts(targetTagName, resultPage)">Load More</button>
+					<button mat-raised-button style="background-color: #352F44;  color: #fff;" class="mat-btn-lg rounded-pill" *ngIf="hasMoreResult && !fetchingResult && !isTaggedPostPage" (click)="loadTimelinePosts(resultPage)">Load More</button>
+					<button mat-raised-button style="background-color: #352F44;  color: #fff;" class="mat-btn-lg rounded-pill" *ngIf="hasMoreResult && !fetchingResult && isTaggedPostPage" (click)="loadTaggedPosts(targetTagName, resultPage)">Load More</button>
 				</div>
 			</div>
 		</div>

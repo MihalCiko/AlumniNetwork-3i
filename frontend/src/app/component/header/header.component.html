@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="position-fixed top-0 mat-elevation-z3 p-4" style="z-index: 999;">
+<mat-toolbar  class="position-fixed top-0 mat-elevation-z3 p-4" style="z-index: 999; background-color: #352F44; ">
   <a href="/" class="text-white text-decoration-none">3i Alumni Network</a>
 
   <span class="example-spacer"></span>
@@ -14,11 +14,11 @@
   <a mat-raised-button *ngIf="!isUserLoggedIn" href="/signup">Signup</a>
 
   <div *ngIf="isUserLoggedIn">
-    <button mat-icon-button (click)="openSearchDialog()">
+    <button mat-icon-button (click)="openSearchDialog()" style="color: #fff;">
       <mat-icon>search</mat-icon>
     </button>
 
-    <button mat-icon-button [matMenuTriggerFor]="notificationMenu" (click)="handleUnseenNotifications()">
+    <button mat-icon-button [matMenuTriggerFor]="notificationMenu" (click)="handleUnseenNotifications()" style="color: #fff;">
       <mat-icon>notifications</mat-icon>
       <span class="position-absolute translate-middle p-2 bg-danger rounded-circle" style="top: 10px; right: -5px;"
         *ngIf="hasUnseenNotification"></span>
@@ -33,11 +33,11 @@
         href="/posts/{{ notification.owningPost.id }}" class="border border-1 border-start-0 border-end-0"
         [ngClass]="last ? '' : 'border-bottom-0'"
         style="height: auto; line-height: 1.6; white-space: normal; font-size: 14px; padding: 16px 20px;">
-        <mat-icon color="primary" style="margin-right: 5px;"
+        <mat-icon  style="margin-right: 5px; background-color: #352F44; color:white;"
           *ngIf="notification.type === 'POST_LIKE' || notification.type === 'COMMENT_LIKE'">favorite</mat-icon>
-        <mat-icon color="primary" style="margin-right: 5px;"
+        <mat-icon  style="margin-right: 5px; background-color: #352F44; color:white;"
           *ngIf="notification.type === 'POST_COMMENT'">comment</mat-icon>
-        <mat-icon color="primary" style="margin-right: 5px;" *ngIf="notification.type === 'POST_SHARE'">share</mat-icon>
+        <mat-icon  style="margin-right: 5px; background-color: #352F44; color:white;" *ngIf="notification.type === 'POST_SHARE'">share</mat-icon>
 
         <span class="fw-500" *ngIf="notification.sender">{{ notification.sender.firstName + ' ' +
           notification.sender.lastName }}</span>
@@ -108,7 +108,7 @@
 
       <div (click)="$event.stopPropagation()" class="position-relative ps-3 pe-3">
         <div class="text-center" *ngIf="hasMoreNotifications" style="margin: 20px 12px 12px 12px;">
-          <button mat-raised-button color="primary" class="rounded-pill align-middle"
+          <button mat-raised-button  class="rounded-pill align-middle" style="background-color: #352F44; color: #fff;"
             *ngIf="hasMoreNotifications && !(fetchingResult && resultPage > 1)"
             (click)="loadNotifications(resultPage)">Load More</button>
           <div *ngIf="fetchingResult && resultPage > 1" class="d-inline-block" style="margin-top: 3px;">
@@ -118,7 +118,7 @@
       </div>
     </mat-menu>
 
-    <button mat-icon-button [matMenuTriggerFor]="mainMenu">
+    <button mat-icon-button [matMenuTriggerFor]="mainMenu" style="color: #fff;">
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #mainMenu="matMenu" xPosition="before">
@@ -129,7 +129,7 @@
   </div>
 </mat-toolbar>
 
-<button mat-fab color="primary" matTooltip="Create New Post" matTooltipPosition="left" class="position-fixed"
-  style="bottom: 30px; right: 30px;" (click)="openPostDialog()">
+<button mat-fab  matTooltip="Create New Post" matTooltipPosition="left" class="position-fixed"
+  style="bottom: 30px; right: 30px; background-color: #352F44; color: #fff;" (click)="openPostDialog()">
   <mat-icon>add</mat-icon>
 </button>

@@ -19,6 +19,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Comment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 1024)
@@ -50,10 +51,10 @@ public class Comment {
     private List<User> likeList = new ArrayList<>();
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        Comment comment = (Comment) object;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
         return Objects.equals(id, comment.id) && Objects.equals(author, comment.author);
     }
 
@@ -62,4 +63,3 @@ public class Comment {
         return Objects.hash(id, author);
     }
 }
-

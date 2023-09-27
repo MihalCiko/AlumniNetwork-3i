@@ -60,7 +60,7 @@
           </div>
 
           <div style="position: absolute; right: 30px; top: 30px" *ngIf="!isProfileViewerOwner">
-            <button mat-raised-button color="primary" *ngIf="!viewerFollowsProfileUser"
+            <button mat-raised-button style="background-color: #352F44;  color: #fff;" *ngIf="!viewerFollowsProfileUser"
               (click)="openFollowConfirmDialog(profileUser.id)">
               Follow
             </button>
@@ -154,7 +154,7 @@
         </div>
 
         <div class="text-center mt-3">
-          <button mat-raised-button color="primary" class="mat-btn-lg rounded-pill"
+          <button mat-raised-button  class="mat-btn-lg rounded-pill" style="background-color: #352F44;  color: #fff;"
             *ngIf="hasMoreResult && !fetchingResult" (click)="loadProfilePosts(resultPage)">
             Load More
           </button>
