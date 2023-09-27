@@ -1,6 +1,6 @@
 package com.mcode.alumninetwork3i.common;
 
-import com.mcode.alumninetwork3i.entity.UserEntity;
+import com.mcode.alumninetwork3i.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class UserPrincipal implements UserDetails {
-    private final UserEntity user;
+    private final User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

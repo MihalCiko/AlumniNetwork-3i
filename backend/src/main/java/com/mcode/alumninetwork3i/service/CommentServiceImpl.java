@@ -1,8 +1,8 @@
 package com.mcode.alumninetwork3i.service;
 
-import com.mcode.alumninetwork3i.entity.CommentEntity;
-import com.mcode.alumninetwork3i.entity.PostEntity;
-import com.mcode.alumninetwork3i.entity.UserEntity;
+import com.mcode.alumninetwork3i.entity.Comment;
+import com.mcode.alumninetwork3i.entity.Post;
+import com.mcode.alumninetwork3i.entity.User;
 import com.mcode.alumninetwork3i.enums.NotificationType;
 import com.mcode.alumninetwork3i.exception.CommentNotFoundException;
 import com.mcode.alumninetwork3i.exception.InvalidOperationException;
@@ -27,14 +27,14 @@ public class CommentServiceImpl implements CommentService {
     private final NotificationService notificationService;
 
     @Override
-    public CommentEntity getCommentById(Long commentId) {
+    public Comment getCommentById(Long commentId) {
         return commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
     }
 
     @Override
-    public CommentEntity createNewComment(String content, PostEntity post) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        CommentEntity newComment = new CommentEntity();
+    public Comment createNewComment(String content, Post post) {
+        User authUser = userService.getAuthenticatedUser();
+        Comment newComment = new Comment();
         newComment.setContent(content);
         newComment.setAuthor(authUser);
         newComment.setPost(post);
@@ -45,9 +45,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentEntity updateComment(Long commentId, String content) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        CommentEntity targetComment = getCommentById(commentId);
+    public Comment updateComment(Long commentId, String content) {
+        User authUser = userService.getAuthenticatedUser();
+        Comment targetComment = getCommentById(commentId);
         if (targetComment.getAuthor().equals(authUser)) {
             targetComment.setContent(content);
             targetComment.setDateLastModified(new Date());
@@ -59,8 +59,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteComment(Long commentId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        CommentEntity targetComment = getCommentById(commentId);
+        User authUser = userService.getAuthenticatedUser();
+        Comment targetComment = getCommentById(commentId);
         if (targetComment.getAuthor().equals(authUser)) {
             commentRepository.deleteById(commentId);
             notificationService.deleteNotificationByOwningComment(targetComment);
@@ -70,14 +70,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentEntity likeComment(Long commentId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        CommentEntity targetComment = getCommentById(commentId);
+    public Comment likeComment(Long commentId) {
+        User authUser = userService.getAuthenticatedUser();
+        Comment targetComment = getCommentById(commentId);
         if (!targetComment.getLikeList().contains(authUser)) {
             targetComment.setLikeCount(targetComment.getLikeCount() + 1);
             targetComment.getLikeList().add(authUser);
             targetComment.setDateLastModified(new Date());
-            CommentEntity updatedComment = commentRepository.save(targetComment);
+            Comment updatedComment = commentRepository.save(targetComment);
 
             if (!targetComment.getAuthor().equals(authUser)) {
                 notificationService.sendNotification(
@@ -96,14 +96,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentEntity unlikeComment(Long commentId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        CommentEntity targetComment = getCommentById(commentId);
+    public Comment unlikeComment(Long commentId) {
+        User authUser = userService.getAuthenticatedUser();
+        Comment targetComment = getCommentById(commentId);
         if (targetComment.getLikeList().contains(authUser)) {
             targetComment.setLikeCount(targetComment.getLikeCount() - 1);
             targetComment.getLikeList().remove(authUser);
             targetComment.setDateLastModified(new Date());
-            CommentEntity updatedComment = commentRepository.save(targetComment);
+            Comment updatedComment = commentRepository.save(targetComment);
 
             if (!targetComment.getAuthor().equals(authUser)) {
                 notificationService.removeNotification(
@@ -120,9 +120,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponse> getPostCommentsPaginate(PostEntity post, Integer page, Integer size) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        List<CommentEntity> foundCommentList = commentRepository.findByPost(
+    public List<CommentResponse> getPostCommentsPaginate(Post post, Integer page, Integer size) {
+        User authUser = userService.getAuthenticatedUser();
+        List<Comment> foundCommentList = commentRepository.findByPost(
                 post,
                 PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dateCreated"))
         );

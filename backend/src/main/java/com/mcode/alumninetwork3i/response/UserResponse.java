@@ -1,6 +1,6 @@
 package com.mcode.alumninetwork3i.response;
 
-import com.mcode.alumninetwork3i.entity.UserEntity;
+import com.mcode.alumninetwork3i.entity.User;
 import lombok.*;
 
 @Getter
@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponse {
-    private UserEntity user;
+    private User user;
     private Boolean followedByAuthUser;
 }
 

@@ -1,13 +1,13 @@
 package com.mcode.alumninetwork3i.service;
 
-import com.mcode.alumninetwork3i.entity.CountryEntity;
+import com.mcode.alumninetwork3i.entity.Country;
 
 import java.util.List;
 
 public interface CountryService {
-    CountryEntity getCountryById(Long id);
+    Country getCountryById(Long id);
 
-    CountryEntity getCountryByName(String name);
+    Country getCountryByName(String name);
 
-    List<CountryEntity> getCountryList();
+    List<Country> getCountryList();
 }

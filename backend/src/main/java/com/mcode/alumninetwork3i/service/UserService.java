@@ -1,40 +1,40 @@
 package com.mcode.alumninetwork3i.service;
 
 import com.mcode.alumninetwork3i.dto.*;
-import com.mcode.alumninetwork3i.entity.CommentEntity;
-import com.mcode.alumninetwork3i.entity.PostEntity;
-import com.mcode.alumninetwork3i.entity.UserEntity;
+import com.mcode.alumninetwork3i.entity.Comment;
+import com.mcode.alumninetwork3i.entity.Post;
+import com.mcode.alumninetwork3i.entity.User;
 import com.mcode.alumninetwork3i.response.UserResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface UserService {
-    UserEntity getUserById(Long userId);
+    User getUserById(Long userId);
 
-    UserEntity getUserByEmail(String email);
+    User getUserByEmail(String email);
 
     List<UserResponse> getFollowerUsersPaginate(Long userId, Integer page, Integer size);
 
     List<UserResponse> getFollowingUsersPaginate(Long userId, Integer page, Integer size);
 
-    UserEntity createNewUser(SignupDto signupDto);
+    User createNewUser(SignupDto signupDto);
 
-    UserEntity updateUserInfo(UpdateUserInfoDto updateUserInfoDto);
+    User updateUserInfo(UpdateUserInfoDto updateUserInfoDto);
 
-    UserEntity updateEmail(UpdateEmailDto updateEmailDto);
+    User updateEmail(UpdateEmailDto updateEmailDto);
 
-    UserEntity updatePassword(UpdatePasswordDto updatePasswordDto);
+    User updatePassword(UpdatePasswordDto updatePasswordDto);
 
-    UserEntity updateProfilePhoto(MultipartFile photo);
+    User updateProfilePhoto(MultipartFile photo);
 
-    UserEntity updateCoverPhoto(MultipartFile photo);
+    User updateCoverPhoto(MultipartFile photo);
 
-    UserEntity verifyEmail(String token);
+    User verifyEmail(String token);
 
     void forgotPassword(String email);
 
-    UserEntity resetPassword(String token, ResetPasswordDto resetPasswordDto);
+    User resetPassword(String token, ResetPasswordDto resetPasswordDto);
 
     void deleteUserAccount();
 
@@ -42,11 +42,11 @@ public interface UserService {
 
     void unfollowUser(Long userId);
 
-    UserEntity getAuthenticatedUser();
+    User getAuthenticatedUser();
 
     List<UserResponse> getUserSearchResult(String key, Integer page, Integer size);
 
-    List<UserEntity> getLikesByPostPaginate(PostEntity post, Integer page, Integer size);
+    List<User> getLikesByPostPaginate(Post post, Integer page, Integer size);
 
-    List<UserEntity> getLikesByCommentPaginate(CommentEntity comment, Integer page, Integer size);
+    List<User> getLikesByCommentPaginate(Comment comment, Integer page, Integer size);
 }

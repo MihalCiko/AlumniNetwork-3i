@@ -1,23 +1,23 @@
 package com.mcode.alumninetwork3i.service;
 
-import com.mcode.alumninetwork3i.entity.CommentEntity;
-import com.mcode.alumninetwork3i.entity.PostEntity;
+import com.mcode.alumninetwork3i.entity.Comment;
+import com.mcode.alumninetwork3i.entity.Post;
 import com.mcode.alumninetwork3i.response.CommentResponse;
 
 import java.util.List;
 
 public interface CommentService {
-    CommentEntity getCommentById(Long commentId);
+    Comment getCommentById(Long commentId);
 
-    CommentEntity createNewComment(String content, PostEntity post);
+    Comment createNewComment(String content, Post post);
 
-    CommentEntity updateComment(Long commentId, String content);
+    Comment updateComment(Long commentId, String content);
 
-    CommentEntity likeComment(Long commentId);
+    Comment likeComment(Long commentId);
 
-    CommentEntity unlikeComment(Long commentId);
+    Comment unlikeComment(Long commentId);
 
     void deleteComment(Long commentId);
 
-    List<CommentResponse> getPostCommentsPaginate(PostEntity post, Integer page, Integer size);
+    List<CommentResponse> getPostCommentsPaginate(Post post, Integer page, Integer size);
 }

@@ -1,7 +1,7 @@
 package com.mcode.alumninetwork3i.service;
 
 import com.mcode.alumninetwork3i.common.UserPrincipal;
-import com.mcode.alumninetwork3i.entity.UserEntity;
+import com.mcode.alumninetwork3i.entity.User;
 import com.mcode.alumninetwork3i.exception.UserNotFoundException;
 import com.mcode.alumninetwork3i.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<UserEntity> user = userRepository.findByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
             throw new UserNotFoundException("No user exists with this email.");
         } else {

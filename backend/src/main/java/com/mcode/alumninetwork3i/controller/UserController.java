@@ -3,7 +3,7 @@ package com.mcode.alumninetwork3i.controller;
 import com.mcode.alumninetwork3i.common.AppConstants;
 import com.mcode.alumninetwork3i.common.UserPrincipal;
 import com.mcode.alumninetwork3i.dto.*;
-import com.mcode.alumninetwork3i.entity.UserEntity;
+import com.mcode.alumninetwork3i.entity.User;
 import com.mcode.alumninetwork3i.response.PostResponse;
 import com.mcode.alumninetwork3i.response.UserResponse;
 import com.mcode.alumninetwork3i.service.JwtTokenService;
@@ -34,7 +34,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody @Valid SignupDto signupDto) {
-        UserEntity savedUser = userService.createNewUser(signupDto);
+        User savedUser = userService.createNewUser(signupDto);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
@@ -43,7 +43,7 @@ public class UserController {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getEmail(), loginDto.getPassword())
         );
-        UserEntity loginUser = userService.getUserByEmail(loginDto.getEmail());
+        User loginUser = userService.getUserByEmail(loginDto.getEmail());
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);
         HttpHeaders newHttpHeaders = new HttpHeaders();
         newHttpHeaders.add(AppConstants.TOKEN_HEADER, jwtTokenService.generateToken(userPrincipal));
@@ -52,13 +52,13 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> showUserProfile(Authentication authentication) {
-        UserEntity user = userService.getUserByEmail(authentication.getPrincipal().toString());
+        User user = userService.getUserByEmail(authentication.getPrincipal().toString());
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/account/update/info")
     public ResponseEntity<?> updateUserInfo(@RequestBody @Valid UpdateUserInfoDto updateUserInfoDto) {
-        UserEntity updatedUser = userService.updateUserInfo(updateUserInfoDto);
+        User updatedUser = userService.updateUserInfo(updateUserInfoDto);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
@@ -76,13 +76,13 @@ public class UserController {
 
     @PostMapping("/account/update/profile-photo")
     public ResponseEntity<?> updateProfilePhoto(@RequestParam("profilePhoto") MultipartFile profilePhoto) {
-        UserEntity updatedUser = userService.updateProfilePhoto(profilePhoto);
+        User updatedUser = userService.updateProfilePhoto(profilePhoto);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     @PostMapping("/account/update/cover-photo")
     public ResponseEntity<?> updateCoverPhoto(@RequestParam("coverPhoto") MultipartFile coverPhoto) {
-        UserEntity updatedUser = userService.updateCoverPhoto(coverPhoto);
+        User updatedUser = userService.updateCoverPhoto(coverPhoto);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
@@ -126,8 +126,8 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable("userId") Long userId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        UserEntity targetUser = userService.getUserById(userId);
+        User authUser = userService.getAuthenticatedUser();
+        User targetUser = userService.getUserById(userId);
         UserResponse userResponse = UserResponse.builder()
                 .user(targetUser)
                 .followedByAuthUser(targetUser.getFollowerUsers().contains(authUser))
@@ -141,7 +141,7 @@ public class UserController {
                                           @RequestParam("size") Integer size) {
         page = page < 0 ? 0 : page - 1;
         size = size <= 0 ? 5 : size;
-        UserEntity targetUser = userService.getUserById(userId);
+        User targetUser = userService.getUserById(userId);
         List<PostResponse> userPosts = postService.getPostsByUserPaginate(targetUser, page, size);
         return new ResponseEntity<>(userPosts, HttpStatus.OK);
     }

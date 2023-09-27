@@ -1,6 +1,6 @@
 package com.mcode.alumninetwork3i.service;
 
-import com.mcode.alumninetwork3i.entity.TagEntity;
+import com.mcode.alumninetwork3i.entity.Tag;
 import com.mcode.alumninetwork3i.exception.TagExistsException;
 import com.mcode.alumninetwork3i.exception.TagNotFoundException;
 import com.mcode.alumninetwork3i.repository.TagRepository;
@@ -18,24 +18,24 @@ public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
 
     @Override
-    public TagEntity getTagById(Long id) {
+    public Tag getTagById(Long id) {
         return tagRepository.findById(id).orElseThrow(TagNotFoundException::new);
     }
 
     @Override
-    public TagEntity getTagByName(String name) {
+    public Tag getTagByName(String name) {
         return tagRepository.findTagByName(name).orElseThrow(TagNotFoundException::new);
     }
 
     @Override
-    public TagEntity createNewTag(String name) {
+    public Tag createNewTag(String name) {
         try {
-            TagEntity tag = getTagByName(name);
+            Tag tag = getTagByName(name);
             if (tag != null) {
                 throw new TagExistsException();
             }
         } catch (TagNotFoundException e) {
-            TagEntity newTag = new TagEntity();
+            Tag newTag = new Tag();
             newTag.setName(name);
             newTag.setTagUseCounter(1);
             newTag.setDateCreated(new Date());
@@ -46,23 +46,23 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagEntity increaseTagUseCounter(String name) {
-        TagEntity targetTag = getTagByName(name);
+    public Tag increaseTagUseCounter(String name) {
+        Tag targetTag = getTagByName(name);
         targetTag.setTagUseCounter(targetTag.getTagUseCounter() + 1);
         targetTag.setDateLastModified(new Date());
         return tagRepository.save(targetTag);
     }
 
     @Override
-    public TagEntity decreaseTagUseCounter(String name) {
-        TagEntity targetTag = getTagByName(name);
+    public Tag decreaseTagUseCounter(String name) {
+        Tag targetTag = getTagByName(name);
         targetTag.setTagUseCounter(targetTag.getTagUseCounter() - 1);
         targetTag.setDateLastModified(new Date());
         return tagRepository.save(targetTag);
     }
 
     @Override
-    public List<TagEntity> getTimelineTags() {
+    public List<Tag> getTimelineTags() {
         return tagRepository.findAll(
                 PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "tagUseCounter"))
         ).getContent();

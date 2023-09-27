@@ -1,6 +1,6 @@
 package com.mcode.alumninetwork3i.response;
 
-import com.mcode.alumninetwork3i.entity.PostEntity;
+import com.mcode.alumninetwork3i.entity.Post;
 import lombok.*;
 
 @Getter
@@ -9,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostResponse {
-    private PostEntity post;
+    private Post post;
     private Boolean likedByAuthUser;
 }

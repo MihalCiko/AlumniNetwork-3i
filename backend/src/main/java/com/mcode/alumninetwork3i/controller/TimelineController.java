@@ -1,6 +1,6 @@
 package com.mcode.alumninetwork3i.controller;
 
-import com.mcode.alumninetwork3i.entity.TagEntity;
+import com.mcode.alumninetwork3i.entity.Tag;
 import com.mcode.alumninetwork3i.response.PostResponse;
 import com.mcode.alumninetwork3i.service.PostService;
 import com.mcode.alumninetwork3i.service.TagService;
@@ -32,7 +32,7 @@ public class TimelineController {
 
     @GetMapping("/tags")
     public ResponseEntity<?> getTimelineTags() {
-        List<TagEntity> timelineTags = tagService.getTimelineTags();
+        List<Tag> timelineTags = tagService.getTimelineTags();
         return new ResponseEntity<>(timelineTags, HttpStatus.OK);
     }
 }

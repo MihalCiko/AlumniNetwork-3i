@@ -1,10 +1,10 @@
 package com.mcode.alumninetwork3i.service;
 
 import com.mcode.alumninetwork3i.dto.TagDto;
-import com.mcode.alumninetwork3i.entity.CommentEntity;
-import com.mcode.alumninetwork3i.entity.PostEntity;
-import com.mcode.alumninetwork3i.entity.TagEntity;
-import com.mcode.alumninetwork3i.entity.UserEntity;
+import com.mcode.alumninetwork3i.entity.Comment;
+import com.mcode.alumninetwork3i.entity.Post;
+import com.mcode.alumninetwork3i.entity.Tag;
+import com.mcode.alumninetwork3i.entity.User;
 import com.mcode.alumninetwork3i.enums.NotificationType;
 import com.mcode.alumninetwork3i.exception.EmptyCommentException;
 import com.mcode.alumninetwork3i.exception.InvalidOperationException;
@@ -43,14 +43,14 @@ public class PostServiceImpl implements PostService {
     private final FileUploadUtil fileUploadUtil;
 
     @Override
-    public PostEntity getPostById(Long postId) {
+    public Post getPostById(Long postId) {
         return postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
     }
 
     @Override
     public PostResponse getPostResponseById(Long postId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        PostEntity foundPost = getPostById(postId);
+        User authUser = userService.getAuthenticatedUser();
+        Post foundPost = getPostById(postId);
         return PostResponse.builder()
                 .post(foundPost)
                 .likedByAuthUser(foundPost.getLikeList().contains(authUser))
@@ -59,10 +59,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostResponse> getTimelinePostsPaginate(Integer page, Integer size) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        List<UserEntity> followingList = authUser.getFollowingUsers();
+        User authUser = userService.getAuthenticatedUser();
+        List<User> followingList = authUser.getFollowingUsers();
         followingList.add(authUser);
-        List<Long> followingListIds = followingList.stream().map(UserEntity::getId).toList();
+        List<Long> followingListIds = followingList.stream().map(User::getId).toList();
         return postRepository.findPostsByAuthorIdIn(
                         followingListIds,
                         PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dateCreated")))
@@ -70,7 +70,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponse> getPostSharesPaginate(PostEntity sharedPost, Integer page, Integer size) {
+    public List<PostResponse> getPostSharesPaginate(Post sharedPost, Integer page, Integer size) {
         return postRepository.findPostsBySharedPost(
                         sharedPost,
                         PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dateCreated")))
@@ -78,7 +78,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponse> getPostByTagPaginate(TagEntity tag, Integer page, Integer size) {
+    public List<PostResponse> getPostByTagPaginate(Tag tag, Integer page, Integer size) {
         return postRepository.findPostsByPostTags(
                         tag,
                         PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dateCreated")))
@@ -86,7 +86,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponse> getPostsByUserPaginate(UserEntity author, Integer page, Integer size) {
+    public List<PostResponse> getPostsByUserPaginate(User author, Integer page, Integer size) {
         return postRepository.findPostsByAuthor(
                         author,
                         PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dateCreated")))
@@ -94,9 +94,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostEntity createNewPost(String content, MultipartFile postPhoto, List<TagDto> postTags) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        PostEntity newPost = new PostEntity();
+    public Post createNewPost(String content, MultipartFile postPhoto, List<TagDto> postTags) {
+        User authUser = userService.getAuthenticatedUser();
+        Post newPost = new Post();
         newPost.setContent(content);
         newPost.setAuthor(authUser);
         newPost.setLikeCount(0);
@@ -122,9 +122,9 @@ public class PostServiceImpl implements PostService {
 
         if (postTags != null && postTags.size() > 0) {
             postTags.forEach(tagDto -> {
-                TagEntity tagToAdd = null;
+                Tag tagToAdd = null;
                 try {
-                    TagEntity existingTag = tagService.getTagByName(tagDto.getTagName());
+                    Tag existingTag = tagService.getTagByName(tagDto.getTagName());
                     if (existingTag != null) {
                         tagToAdd = tagService.increaseTagUseCounter(tagDto.getTagName());
                     }
@@ -139,8 +139,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostEntity updatePost(Long postId, String content, MultipartFile postPhoto, List<TagDto> postTags) {
-        PostEntity targetPost = getPostById(postId);
+    public Post updatePost(Long postId, String content, MultipartFile postPhoto, List<TagDto> postTags) {
+        Post targetPost = getPostById(postId);
         if (StringUtils.isNotEmpty(content)) {
             targetPost.setContent(content);
         }
@@ -166,7 +166,7 @@ public class PostServiceImpl implements PostService {
         if (postTags != null && postTags.size() > 0) {
             postTags.forEach(tagDto -> {
                 Boolean isNewTag = false;
-                TagEntity targetTag;
+                Tag targetTag;
                 try {
                     targetTag = tagService.getTagByName(tagDto.getTagName());
                 } catch (TagNotFoundException e) {
@@ -192,8 +192,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(Long postId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        PostEntity targetPost = getPostById(postId);
+        User authUser = userService.getAuthenticatedUser();
+        Post targetPost = getPostById(postId);
 
         if (targetPost.getAuthor().equals(authUser)) {
             targetPost.getShareList().forEach(sharingPost -> {
@@ -220,8 +220,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePostPhoto(Long postId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        PostEntity targetPost = getPostById(postId);
+        User authUser = userService.getAuthenticatedUser();
+        Post targetPost = getPostById(postId);
 
         if (targetPost.getAuthor().equals(authUser)) {
             if (targetPost.getPostPhoto() != null) {
@@ -242,8 +242,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void likePost(Long postId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        PostEntity targetPost = getPostById(postId);
+        User authUser = userService.getAuthenticatedUser();
+        Post targetPost = getPostById(postId);
         if (!targetPost.getLikeList().contains(authUser)) {
             targetPost.setLikeCount(targetPost.getLikeCount() + 1);
             targetPost.getLikeList().add(authUser);
@@ -265,8 +265,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void unlikePost(Long postId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        PostEntity targetPost = getPostById(postId);
+        User authUser = userService.getAuthenticatedUser();
+        Post targetPost = getPostById(postId);
         if (targetPost.getLikeList().contains(authUser)) {
             targetPost.setLikeCount(targetPost.getLikeCount() - 1);
             targetPost.getLikeList().remove(authUser);
@@ -285,12 +285,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public CommentEntity createPostComment(Long postId, String content) {
+    public Comment createPostComment(Long postId, String content) {
         if (StringUtils.isEmpty(content)) throw new EmptyCommentException();
 
-        UserEntity authUser = userService.getAuthenticatedUser();
-        PostEntity targetPost = getPostById(postId);
-        CommentEntity savedComment = commentService.createNewComment(content, targetPost);
+        User authUser = userService.getAuthenticatedUser();
+        Post targetPost = getPostById(postId);
+        Comment savedComment = commentService.createNewComment(content, targetPost);
         targetPost.setCommentCount(targetPost.getCommentCount() + 1);
         postRepository.save(targetPost);
 
@@ -308,7 +308,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public CommentEntity updatePostComment(Long commentId, Long postId, String content) {
+    public Comment updatePostComment(Long commentId, Long postId, String content) {
         if (StringUtils.isEmpty(content)) throw new EmptyCommentException();
 
         return commentService.updateComment(commentId, content);
@@ -316,7 +316,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePostComment(Long commentId, Long postId) {
-        PostEntity targetPost = getPostById(postId);
+        Post targetPost = getPostById(postId);
         commentService.deleteComment(commentId);
         targetPost.setCommentCount(targetPost.getCommentCount() - 1);
         targetPost.setDateLastModified(new Date());
@@ -324,11 +324,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostEntity createPostShare(String content, Long postId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        PostEntity targetPost = getPostById(postId);
+    public Post createPostShare(String content, Long postId) {
+        User authUser = userService.getAuthenticatedUser();
+        Post targetPost = getPostById(postId);
         if (!targetPost.getIsTypeShare()) {
-            PostEntity newPostShare = new PostEntity();
+            Post newPostShare = new Post();
             newPostShare.setContent(content);
             newPostShare.setAuthor(authUser);
             newPostShare.setLikeCount(0);
@@ -339,7 +339,7 @@ public class PostServiceImpl implements PostService {
             newPostShare.setSharedPost(targetPost);
             newPostShare.setDateCreated(new Date());
             newPostShare.setDateLastModified(new Date());
-            PostEntity savedPostShare = postRepository.save(newPostShare);
+            Post savedPostShare = postRepository.save(newPostShare);
             targetPost.getShareList().add(savedPostShare);
             targetPost.setShareCount(targetPost.getShareCount() + 1);
             postRepository.save(targetPost);
@@ -361,9 +361,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostEntity updatePostShare(String content, Long postShareId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        PostEntity targetPostShare = getPostById(postShareId);
+    public Post updatePostShare(String content, Long postShareId) {
+        User authUser = userService.getAuthenticatedUser();
+        Post targetPostShare = getPostById(postShareId);
         if (targetPostShare.getAuthor().equals(authUser)) {
             targetPostShare.setContent(content);
             targetPostShare.setDateLastModified(new Date());
@@ -375,10 +375,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePostShare(Long postShareId) {
-        UserEntity authUser = userService.getAuthenticatedUser();
-        PostEntity targetPostShare = getPostById(postShareId);
+        User authUser = userService.getAuthenticatedUser();
+        Post targetPostShare = getPostById(postShareId);
         if (targetPostShare.getAuthor().equals(authUser)) {
-            PostEntity sharedPost = targetPostShare.getSharedPost();
+            Post sharedPost = targetPostShare.getSharedPost();
             sharedPost.getShareList().remove(targetPostShare);
             sharedPost.setShareCount(sharedPost.getShareCount() - 1);
             postRepository.save(sharedPost);
@@ -400,8 +400,8 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    private PostResponse postToPostResponse(PostEntity post) {
-        UserEntity authUser = userService.getAuthenticatedUser();
+    private PostResponse postToPostResponse(Post post) {
+        User authUser = userService.getAuthenticatedUser();
         return PostResponse.builder()
                 .post(post)
                 .likedByAuthUser(post.getLikeList().contains(authUser))

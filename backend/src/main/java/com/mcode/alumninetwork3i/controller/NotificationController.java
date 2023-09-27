@@ -1,6 +1,6 @@
 package com.mcode.alumninetwork3i.controller;
 
-import com.mcode.alumninetwork3i.entity.NotificationEntity;
+import com.mcode.alumninetwork3i.entity.Notification;
 import com.mcode.alumninetwork3i.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class NotificationController {
                                               @RequestParam("size") Integer size) {
         page = page < 0 ? 0 : page - 1;
         size = size <= 0 ? 5 : size;
-        List<NotificationEntity> notifications = notificationService.getNotificationsForAuthUserPaginate(page, size);
+        List<Notification> notifications = notificationService.getNotificationsForAuthUserPaginate(page, size);
         return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
 

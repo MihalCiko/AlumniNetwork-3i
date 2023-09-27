@@ -1,19 +1,19 @@
 package com.mcode.alumninetwork3i.service;
 
-import com.mcode.alumninetwork3i.entity.TagEntity;
+import com.mcode.alumninetwork3i.entity.Tag;
 
 import java.util.List;
 
 public interface TagService {
-    TagEntity getTagById(Long id);
+    Tag getTagById(Long id);
 
-    TagEntity getTagByName(String name);
+    Tag getTagByName(String name);
 
-    TagEntity createNewTag(String name);
+    Tag createNewTag(String name);
 
-    TagEntity increaseTagUseCounter(String name);
+    Tag increaseTagUseCounter(String name);
 
-    TagEntity decreaseTagUseCounter(String name);
+    Tag decreaseTagUseCounter(String name);
 
-    List<TagEntity> getTimelineTags();
+    List<Tag> getTimelineTags();
 }

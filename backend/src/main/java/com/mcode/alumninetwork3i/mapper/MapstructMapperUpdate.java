@@ -1,7 +1,7 @@
 package com.mcode.alumninetwork3i.mapper;
 
 import com.mcode.alumninetwork3i.dto.UpdateUserInfoDto;
-import com.mcode.alumninetwork3i.entity.UserEntity;
+import com.mcode.alumninetwork3i.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -20,5 +20,5 @@ public interface MapstructMapperUpdate {
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "profilePhoto", ignore = true)
     @Mapping(target = "country", ignore = true)
-    void updateUserFromUserUpdateDto(UpdateUserInfoDto updateUserInfoDto, @MappingTarget UserEntity user);
+    void updateUserFromUserUpdateDto(UpdateUserInfoDto updateUserInfoDto, @MappingTarget User user);
 }

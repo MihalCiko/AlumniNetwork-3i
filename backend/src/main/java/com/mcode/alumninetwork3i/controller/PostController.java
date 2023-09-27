@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcode.alumninetwork3i.dto.TagDto;
-import com.mcode.alumninetwork3i.entity.CommentEntity;
-import com.mcode.alumninetwork3i.entity.PostEntity;
-import com.mcode.alumninetwork3i.entity.TagEntity;
-import com.mcode.alumninetwork3i.entity.UserEntity;
+import com.mcode.alumninetwork3i.entity.Comment;
+import com.mcode.alumninetwork3i.entity.Post;
+import com.mcode.alumninetwork3i.entity.Tag;
+import com.mcode.alumninetwork3i.entity.User;
 import com.mcode.alumninetwork3i.exception.EmptyPostException;
 import com.mcode.alumninetwork3i.response.CommentResponse;
 import com.mcode.alumninetwork3i.response.PostResponse;
@@ -49,7 +49,7 @@ public class PostController {
         List<TagDto> postTagsToAdd = postTags.isEmpty() ? null :
                 mapper.readValue(postTags.get(), new TypeReference<>() {});
 
-        PostEntity createdPost = postService.createNewPost(contentToAdd, postPhotoToAdd, postTagsToAdd);
+        Post createdPost = postService.createNewPost(contentToAdd, postPhotoToAdd, postTagsToAdd);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
 
@@ -70,7 +70,7 @@ public class PostController {
         List<TagDto> postTagsToAdd = postTags.isEmpty() ? null :
                 mapper.readValue(postTags.get(), new TypeReference<>() {});
 
-        PostEntity updatePost = postService.updatePost(postId, contentToAdd, postImageToAdd, postTagsToAdd);
+        Post updatePost = postService.updatePost(postId, contentToAdd, postImageToAdd, postTagsToAdd);
         return new ResponseEntity<>(updatePost, HttpStatus.OK);
     }
 
@@ -98,8 +98,8 @@ public class PostController {
                                           @RequestParam("size") Integer size) {
         page = page < 0 ? 0 : page-1;
         size = size <= 0 ? 5 : size;
-        PostEntity targetPost = postService.getPostById(postId);
-        List<UserEntity> postLikerList = userService.getLikesByPostPaginate(targetPost, page, size);
+        Post targetPost = postService.getPostById(postId);
+        List<User> postLikerList = userService.getLikesByPostPaginate(targetPost, page, size);
         return new ResponseEntity<>(postLikerList, HttpStatus.OK);
     }
 
@@ -109,7 +109,7 @@ public class PostController {
                                            @RequestParam("size") Integer size) {
         page = page < 0 ? 0 : page-1;
         size = size <= 0 ? 5 : size;
-        PostEntity sharedPost = postService.getPostById(postId);
+        Post sharedPost = postService.getPostById(postId);
         List<PostResponse> foundPostShares = postService.getPostSharesPaginate(sharedPost, page, size);
         return new ResponseEntity<>(foundPostShares, HttpStatus.OK);
     }
@@ -132,7 +132,7 @@ public class PostController {
                                              @RequestParam("size") Integer size) {
         page = page < 0 ? 0 : page-1;
         size = size <= 0 ? 5 : size;
-        PostEntity targetPost = postService.getPostById(postId);
+        Post targetPost = postService.getPostById(postId);
         List<CommentResponse> postCommentResponseList = commentService.getPostCommentsPaginate(targetPost, page, size);
         return new ResponseEntity<>(postCommentResponseList, HttpStatus.OK);
     }
@@ -140,7 +140,7 @@ public class PostController {
     @PostMapping("/posts/{postId}/comments/create")
     public ResponseEntity<?> createPostComment(@PathVariable("postId") Long postId,
                                                @RequestParam(value = "content") String content) {
-        CommentEntity savedComment = postService.createPostComment(postId, content);
+        Comment savedComment = postService.createPostComment(postId, content);
         CommentResponse commentResponse = CommentResponse.builder()
                 .comment(savedComment)
                 .likedByAuthUser(false)
@@ -152,7 +152,7 @@ public class PostController {
     public ResponseEntity<?> updatePostComment(@PathVariable("commentId") Long commentId,
                                                @PathVariable("postId") Long postId,
                                                @RequestParam(value = "content") String content) {
-        CommentEntity savedComment = postService.updatePostComment(commentId, postId, content);
+        Comment savedComment = postService.updatePostComment(commentId, postId, content);
         return new ResponseEntity<>(savedComment, HttpStatus.OK);
     }
 
@@ -181,8 +181,8 @@ public class PostController {
                                                 @RequestParam("size") Integer size) {
         page = page < 0 ? 0 : page-1;
         size = size <= 0 ? 5 : size;
-        CommentEntity targetComment = commentService.getCommentById(commentId);
-        List<UserEntity> commentLikes = userService.getLikesByCommentPaginate(targetComment, page, size);
+        Comment targetComment = commentService.getCommentById(commentId);
+        List<User> commentLikes = userService.getLikesByCommentPaginate(targetComment, page, size);
         return new ResponseEntity<>(commentLikes, HttpStatus.OK);
     }
 
@@ -190,7 +190,7 @@ public class PostController {
     public ResponseEntity<?> createPostShare(@PathVariable("postId") Long postId,
                                              @RequestParam(value = "content", required = false) Optional<String> content) {
         String contentToAdd = content.isEmpty() ? null : content.get();
-        PostEntity postShare = postService.createPostShare(contentToAdd, postId);
+        Post postShare = postService.createPostShare(contentToAdd, postId);
         return new ResponseEntity<>(postShare, HttpStatus.OK);
     }
 
@@ -198,7 +198,7 @@ public class PostController {
     public ResponseEntity<?> updatePostShare(@PathVariable("postShareId") Long postShareId,
                                              @RequestParam(value = "content", required = false) Optional<String> content) {
         String contentToAdd = content.isEmpty() ? null : content.get();
-        PostEntity updatedPostShare = postService.updatePostShare(contentToAdd, postShareId);
+        Post updatedPostShare = postService.updatePostShare(contentToAdd, postShareId);
         return new ResponseEntity<>(updatedPostShare, HttpStatus.OK);
     }
 
@@ -214,7 +214,7 @@ public class PostController {
                                            @RequestParam("size") Integer size) {
         page = page < 0 ? 0 : page-1;
         size = size <= 0 ? 5 : size;
-        TagEntity targetTag = tagService.getTagByName(tagName);
+        Tag targetTag = tagService.getTagByName(tagName);
         List<PostResponse> taggedPosts = postService.getPostByTagPaginate(targetTag, page, size);
         return new ResponseEntity<>(taggedPosts, HttpStatus.OK);
     }

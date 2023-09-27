@@ -1,6 +1,6 @@
 package com.mcode.alumninetwork3i.controller;
 
-import com.mcode.alumninetwork3i.entity.CountryEntity;
+import com.mcode.alumninetwork3i.entity.Country;
 import com.mcode.alumninetwork3i.service.CountryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class CountryController {
 
     @GetMapping("/countries")
     public ResponseEntity<?> getCountryList() {
-        List<CountryEntity> countryList = countryService.getCountryList();
+        List<Country> countryList = countryService.getCountryList();
         return new ResponseEntity<>(countryList, HttpStatus.OK);
     }
 }

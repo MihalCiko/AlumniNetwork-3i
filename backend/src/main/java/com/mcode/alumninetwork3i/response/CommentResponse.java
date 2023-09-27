@@ -1,6 +1,6 @@
 package com.mcode.alumninetwork3i.response;
 
-import com.mcode.alumninetwork3i.entity.CommentEntity;
+import com.mcode.alumninetwork3i.entity.Comment;
 import lombok.*;
 
 @Getter
@@ -9,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentResponse {
-    private CommentEntity comment;
+    private Comment comment;
     private Boolean likedByAuthUser;
 }

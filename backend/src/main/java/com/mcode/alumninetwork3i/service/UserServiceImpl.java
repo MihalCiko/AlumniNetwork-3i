@@ -3,10 +3,10 @@ package com.mcode.alumninetwork3i.service;
 import com.mcode.alumninetwork3i.common.AppConstants;
 import com.mcode.alumninetwork3i.common.UserPrincipal;
 import com.mcode.alumninetwork3i.dto.*;
-import com.mcode.alumninetwork3i.entity.CommentEntity;
-import com.mcode.alumninetwork3i.entity.CountryEntity;
-import com.mcode.alumninetwork3i.entity.PostEntity;
-import com.mcode.alumninetwork3i.entity.UserEntity;
+import com.mcode.alumninetwork3i.entity.Comment;
+import com.mcode.alumninetwork3i.entity.Country;
+import com.mcode.alumninetwork3i.entity.Post;
+import com.mcode.alumninetwork3i.entity.User;
 import com.mcode.alumninetwork3i.enums.Role;
 import com.mcode.alumninetwork3i.exception.EmailExistsException;
 import com.mcode.alumninetwork3i.exception.InvalidOperationException;
@@ -51,18 +51,18 @@ public class UserServiceImpl implements UserService {
     private final FileUploadUtil fileUploadUtil;
 
     @Override
-    public UserEntity getUserById(Long userId) {
+    public User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public UserEntity getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
     public List<UserResponse> getFollowerUsersPaginate(Long userId, Integer page, Integer size) {
-        UserEntity targetUser = getUserById(userId);
+        User targetUser = getUserById(userId);
         return userRepository.findUsersByFollowingUsers(targetUser,
                         PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "firstName", "lastName")))
                 .stream().map(this::userToUserResponse).collect(Collectors.toList());
@@ -70,21 +70,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponse> getFollowingUsersPaginate(Long userId, Integer page, Integer size) {
-        UserEntity targetUser = getUserById(userId);
+        User targetUser = getUserById(userId);
         return userRepository.findUsersByFollowerUsers(targetUser,
                         PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "firstName", "lastName")))
                 .stream().map(this::userToUserResponse).collect(Collectors.toList());
     }
 
     @Override
-    public UserEntity createNewUser(SignupDto signupDto) {
+    public User createNewUser(SignupDto signupDto) {
         try {
-            UserEntity user = getUserByEmail(signupDto.getEmail());
+            User user = getUserByEmail(signupDto.getEmail());
             if (user != null) {
                 throw new EmailExistsException();
             }
         } catch (UserNotFoundException e) {
-            UserEntity newUser = new UserEntity();
+            User newUser = new User();
             newUser.setEmail(signupDto.getEmail());
             newUser.setPassword(passwordEncoder.encode(signupDto.getPassword()));
             newUser.setFirstName(signupDto.getFirstName());
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
             newUser.setJoinDate(new Date());
             newUser.setDateLastModified(new Date());
             newUser.setRole(Role.ROLE_USER.name());
-            UserEntity savedUser = userRepository.save(newUser);
+            User savedUser = userRepository.save(newUser);
             UserPrincipal userPrincipal = new UserPrincipal(savedUser);
             String emailVerifyMail =
                     emailService.buildEmailVerifyMail(jwtTokenService.generateToken(userPrincipal));
@@ -108,10 +108,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity updateUserInfo(UpdateUserInfoDto updateUserInfoDto) {
-        UserEntity authUser = getAuthenticatedUser();
+    public User updateUserInfo(UpdateUserInfoDto updateUserInfoDto) {
+        User authUser = getAuthenticatedUser();
         if (updateUserInfoDto.getCountryName() != null) {
-            CountryEntity selectedUserCountry = countryService.getCountryByName(updateUserInfoDto.getCountryName());
+            Country selectedUserCountry = countryService.getCountryByName(updateUserInfoDto.getCountryName());
             authUser.setCountry(selectedUserCountry);
         }
         mapstructMapperUpdate.updateUserFromUserUpdateDto(updateUserInfoDto, authUser);
@@ -119,14 +119,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity updateEmail(UpdateEmailDto updateEmailDto) {
-        UserEntity authUser = getAuthenticatedUser();
+    public User updateEmail(UpdateEmailDto updateEmailDto) {
+        User authUser = getAuthenticatedUser();
         String newEmail = updateEmailDto.getEmail();
         String password = updateEmailDto.getPassword();
 
         if (!newEmail.equalsIgnoreCase(authUser.getEmail())) {
             try {
-                UserEntity duplicateUser = getUserByEmail(newEmail);
+                User duplicateUser = getUserByEmail(newEmail);
                 if (duplicateUser != null) {
                     throw new EmailExistsException();
                 }
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
                     authUser.setEmail(newEmail);
                     authUser.setEmailVerified(false);
                     authUser.setDateLastModified(new Date());
-                    UserEntity updatedUser = userRepository.save(authUser);
+                    User updatedUser = userRepository.save(authUser);
                     UserPrincipal userPrincipal = new UserPrincipal(updatedUser);
                     String emailVerifyMail =
                             emailService.buildEmailVerifyMail(jwtTokenService.generateToken(userPrincipal));
@@ -152,8 +152,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity updatePassword(UpdatePasswordDto updatePasswordDto) {
-        UserEntity authUser = getAuthenticatedUser();
+    public User updatePassword(UpdatePasswordDto updatePasswordDto) {
+        User authUser = getAuthenticatedUser();
         if (passwordEncoder.matches(updatePasswordDto.getOldPassword(), authUser.getPassword())) {
             authUser.setPassword(passwordEncoder.encode(updatePasswordDto.getPassword()));
             authUser.setDateLastModified(new Date());
@@ -164,9 +164,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity verifyEmail(String token) {
+    public User verifyEmail(String token) {
         String targetEmail = jwtTokenService.getSubjectFromToken(token);
-        UserEntity targetUser = getUserByEmail(targetEmail);
+        User targetUser = getUserByEmail(targetEmail);
         targetUser.setEmailVerified(true);
         targetUser.setAccountVerified(true);
         targetUser.setDateLastModified(new Date());
@@ -174,8 +174,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity updateProfilePhoto(MultipartFile profilePhoto) {
-        UserEntity targetUser = getAuthenticatedUser();
+    public User updateProfilePhoto(MultipartFile profilePhoto) {
+        User targetUser = getAuthenticatedUser();
         if (!profilePhoto.isEmpty() && profilePhoto.getSize() > 0) {
             String uploadDir = environment.getProperty("upload.user.images");
             String oldPhotoName = targetUser.getProfilePhoto();
@@ -197,8 +197,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity updateCoverPhoto(MultipartFile coverPhoto) {
-        UserEntity targetUser = getAuthenticatedUser();
+    public User updateCoverPhoto(MultipartFile coverPhoto) {
+        User targetUser = getAuthenticatedUser();
         if (!coverPhoto.isEmpty() && coverPhoto.getSize() > 0) {
             String uploadDir = environment.getProperty("upload.user.images");
             String oldPhotoName = targetUser.getCoverPhoto();
@@ -222,7 +222,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void forgotPassword(String email) {
         try {
-            UserEntity targetUser = getUserByEmail(email);
+            User targetUser = getUserByEmail(email);
             UserPrincipal userPrincipal = new UserPrincipal(targetUser);
             String emailVerifyMail =
                     emailService.buildResetPasswordMail(jwtTokenService.generateToken(userPrincipal));
@@ -232,16 +232,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity resetPassword(String token, ResetPasswordDto resetPasswordDto) {
+    public User resetPassword(String token, ResetPasswordDto resetPasswordDto) {
         String targetUserEmail = jwtTokenService.getSubjectFromToken(token);
-        UserEntity targetUser = getUserByEmail(targetUserEmail);
+        User targetUser = getUserByEmail(targetUserEmail);
         targetUser.setPassword(passwordEncoder.encode(resetPasswordDto.getPassword()));
         return userRepository.save(targetUser);
     }
 
     @Override
     public void deleteUserAccount() {
-        UserEntity authUser = getAuthenticatedUser();
+        User authUser = getAuthenticatedUser();
         String profilePhoto = getPhotoNameFromPhotoUrl(authUser.getProfilePhoto());
         // delete user profile picture from filesystem if exists
         if (profilePhoto != null && profilePhoto.length() > 0) {
@@ -257,9 +257,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void followUser(Long userId) {
-        UserEntity authUser = getAuthenticatedUser();
+        User authUser = getAuthenticatedUser();
         if (!authUser.getId().equals(userId)) {
-            UserEntity userToFollow = getUserById(userId);
+            User userToFollow = getUserById(userId);
             authUser.getFollowingUsers().add(userToFollow);
             authUser.setFollowingCount(authUser.getFollowingCount() + 1);
             userToFollow.getFollowerUsers().add(authUser);
@@ -273,9 +273,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void unfollowUser(Long userId) {
-        UserEntity authUser = getAuthenticatedUser();
+        User authUser = getAuthenticatedUser();
         if (!authUser.getId().equals(userId)) {
-            UserEntity userToUnfollow = getUserById(userId);
+            User userToUnfollow = getUserById(userId);
             authUser.getFollowingUsers().remove(userToUnfollow);
             authUser.setFollowingCount(authUser.getFollowingCount() - 1);
             userToUnfollow.getFollowerUsers().remove(authUser);
@@ -298,7 +298,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> getLikesByPostPaginate(PostEntity post, Integer page, Integer size) {
+    public List<User> getLikesByPostPaginate(Post post, Integer page, Integer size) {
         return userRepository.findUsersByLikedPosts(
                 post,
                 PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "firstName", "lastName"))
@@ -306,14 +306,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> getLikesByCommentPaginate(CommentEntity comment, Integer page, Integer size) {
+    public List<User> getLikesByCommentPaginate(Comment comment, Integer page, Integer size) {
         return userRepository.findUsersByLikedComments(
                 comment,
                 PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "firstName", "lastName"))
         );
     }
 
-    public final UserEntity getAuthenticatedUser() {
+    public final User getAuthenticatedUser() {
         String authUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         return getUserByEmail(authUserEmail);
     }
@@ -328,8 +328,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private UserResponse userToUserResponse(UserEntity user) {
-        UserEntity authUser = getAuthenticatedUser();
+    private UserResponse userToUserResponse(User user) {
+        User authUser = getAuthenticatedUser();
         return UserResponse.builder()
                 .user(user)
                 .followedByAuthUser(user.getFollowerUsers().contains(authUser))
